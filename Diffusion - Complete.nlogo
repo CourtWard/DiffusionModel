@@ -1,27 +1,31 @@
-breed [leftys lefty] ; turtles start on left    
-breed [rightys righty] ; turtles start on right 
+breed [leftys lefty] ; turtles start on left
+breed [rightys righty] ; turtles start on right
 
 breed [negatives negative] ; turtles on left
 breed [positives positive] ; turtles on right
 
-turtles-own 
-[  
+turtles-own
+[
   speed
  ]
 
 to setup
-  clear-all
- 
+  ;; (for this model to work with NetLogo's new plotting features,
+  ;; __clear-all-and-reset-ticks should be replaced with clear-all at
+  ;; the beginning of your setup procedure and reset-ticks at the end
+  ;; of the procedure.)
+  __clear-all-and-reset-ticks
+
   ifelse Show-Direction?
      [set-default-shape turtles "default"] ; shows turtle as an arrow
      [set-default-shape turtles "dot"] ; shows turtle as a dot
   create-leftys Number-of-Particles-on-Left ; creates turtles on the left side of the barrier with properties below
-     ask leftys 
+     ask leftys
        [
          set color sky  ;; allows observers to track whether particles cross the barrier
          set xcor random -16 ;; random xcor while staying on the left side
          if xcor = 0 ;;prevents turtles from starting on barrier
-           [  
+           [
              set heading 270
              pu
              forward 1
@@ -34,16 +38,16 @@ to setup
          set color orange ;;allows observers to track whether particles cross the barrier
          set xcor random 16  ;;random xcor while staying on the right side
          if xcor = 0 ;; prevents turtles from starting on barrier
-           [  
+           [
              set heading 90
              pu
              forward 1
             ]
 
-   
+
          set ycor random-ycor ; gives random ycor
        ]
-  
+
   ask turtles
      [
        set speed ( temperature / 250 )
@@ -53,7 +57,7 @@ to setup
      [ask patches [set-up-patches]] ; creates barrier
      []
   update-patches
-    
+
   ask turtles
      [                                   ;; turtles don't start on walls
        if xcor >= ( max-pxcor - 1 ) ;right side
@@ -84,10 +88,10 @@ to setup
              forward 1; move away from wall
              set heading random 360; maintain randomness
            ]
-      
+
        update-counts ; keeps track of how many turtles are on each side throughout the run
      ]
-       update-plots
+       my-update-plots
 end
 
 to clear-paths
@@ -105,12 +109,12 @@ to update-patches
       ]
   ]
 end
-  
-  
+
+
 to set-up-patches ; creates barrier based on the number-of-slits setting
 
-  if ( pxcor = 0 ) 
-     [ set pcolor yellow ] 
+  if ( pxcor = 0 )
+     [ set pcolor yellow ]
   if number-of-slits = 1
      [
        if pycor > (- Width-of-Slits) and pycor < Width-of-Slits
@@ -121,39 +125,39 @@ to set-up-patches ; creates barrier based on the number-of-slits setting
      [
        if pycor > ( (max-pycor / number-of-slits) - Width-of-Slits) and pycor < ((max-pycor / number-of-slits) + Width-of-Slits)
          [set pcolor black]
-     
-    
+
+
        if pycor > ((min-pycor / number-of-slits) - Width-of-Slits) and pycor < ((min-pycor / number-of-slits) + Width-of-Slits)
          [set pcolor black]
      ]
-  
+
   if number-of-slits = 3
      [
        if pycor > (- Width-of-Slits) and pycor < Width-of-Slits
          [set pcolor black]
-         
+
        if pycor > (max-pycor - (max-pycor / number-of-slits) - Width-of-Slits + 1 ) and pycor < (max-pycor - (max-pycor / number-of-slits) + Width-of-Slits )
          [set pcolor black]
-     
-    
+
+
        if pycor >  ((min-pycor - (min-pycor / number-of-slits) - Width-of-Slits )) and pycor <  ((min-pycor - (min-pycor / number-of-slits) + Width-of-Slits - 1 ))
          [set pcolor black]
      ]
 
   if number-of-slits = 4
      [
-                
+
        if pycor > ( (max-pycor / number-of-slits) - Width-of-Slits) and pycor < ((max-pycor / number-of-slits) + Width-of-Slits)
          [set pcolor black]
-     
-    
+
+
        if pycor > ((min-pycor / number-of-slits) - Width-of-Slits) and pycor < ((min-pycor / number-of-slits) + Width-of-Slits)
          [set pcolor black]
 
        if pycor > ( ( 3 * max-pycor / number-of-slits) - Width-of-Slits) and pycor < (( 3 * max-pycor / number-of-slits) + Width-of-Slits)
          [set pcolor black]
-     
-    
+
+
        if pycor > (( 3 * min-pycor / number-of-slits) - Width-of-Slits) and pycor < (( 3 * min-pycor / number-of-slits) + Width-of-Slits)
          [set pcolor black]
 
@@ -165,36 +169,36 @@ to set-up-patches ; creates barrier based on the number-of-slits setting
 
        if pycor > (- Width-of-Slits) and pycor < Width-of-Slits
          [set pcolor black]
-         
+
        if pycor > (12 - Width-of-Slits) and pycor < (12 + Width-of-Slits)
          [set pcolor black]
-     
-    
+
+
        if pycor > (- 12 - Width-of-Slits) and pycor < (- 12 + Width-of-Slits)
          [set pcolor black]
-         
-     
+
+
        if pycor > (6 - Width-of-Slits) and pycor < (6 + Width-of-Slits)
          [set pcolor black]
-     
-    
+
+
        if pycor > (- 6 - Width-of-Slits) and pycor < (- 6 + Width-of-Slits)
-         [set pcolor black]  
+         [set pcolor black]
      ]
 
 end
 
-to Go     
+to Go
   tick
-  ask turtles 
+  ask turtles
     [
-       ifelse Show-Direction?                         
+       ifelse Show-Direction?
            [set shape "default"] ; changes turtle shape to arrow in middle of run
            [set shape "dot"]  ; changes turtle shape to a dot in middle of run
     ]
-  ifelse Show-path? 
+  ifelse Show-path?
     [
-      ask turtles 
+      ask turtles
           [pd] ; traces path of turtle if yes
     ]
     [
@@ -206,68 +210,68 @@ to Go
     [
       move ; moves turtle
       collide ; tells turtle how to interact with other turtles
-      avoid-patches  ; tells turtle how to interact with barrier    
+      avoid-patches  ; tells turtle how to interact with barrier
       update-counts ; keeps track of how many turtles are on each side during each step
     ]
-  
-  update-plots 
+
+  my-update-plots
   ifelse Stop-At-Equilibrium?
     [
      ifelse ( count negatives ) = ( count positives ) or ( count negatives ) = ( count positives) + 1 or ( count negatives ) + 1 = ( count positives ) ;or count leftys = count rightys + 1 or count leftys = count rightys - 1
        [
          stop
        ]
-       [ 
-          
+       [
+
        ]
     ]
     [
-      
+
     ]
 end
 
 
 to move
- 
+
   forward speed
-  
-end  
+
+end
 
 to collide
 
 ; Collide with other particles
-  let particle one-of other turtles-here                 
+  let particle one-of other turtles-here
                          ; collide with particles
-  if particle != nobody ; if there is another turtle here              
-    [ 
-      ask particle 
+  if particle != nobody ; if there is another turtle here
+    [
+      ask particle
        [ set heading (- heading) ] ; turtle should turn around/reverse direction - ie collide
-    ] 
+    ]
 
-  
+
 ; collide with walls
   if xcor >= (max-pxcor - speed )
     [
       set heading (- heading)
-   
-    ]                        
+
+    ]
   if xcor <= (min-pxcor + speed )
     [
-      set heading (- heading)  
-   
+      set heading (- heading)
+
     ]
-    
+
   if ycor >= (max-pycor - speed )
     [
       set heading (- heading + 180)
-   
-    ]                        
-  if ycor <= (min-pycor + speed )
-    [
-      set heading (- heading + 180)  
 
     ]
-    
+  if ycor <= (min-pycor + speed )
+    [
+      set heading (- heading + 180)
+
+    ]
+
 end
 
 
@@ -275,10 +279,10 @@ end
 
 
 
-to avoid-patches  
+to avoid-patches
 
-       if pcolor = yellow 
-          [ 
+       if pcolor = yellow
+          [
              ask negatives with [pcolor = yellow ] [pu setxy (xcor - .1) ycor set heading (- heading) ]
              ask positives  with [pcolor = yellow ] [pu setxy (xcor + .1) ycor set heading (- heading) ]
           ]
@@ -292,28 +296,28 @@ end
 
 to update-counts
    if xcor > 0
-      [ 
+      [
         set breed positives  ; counts # on right
-      ] 
-          
+      ]
+
    if xcor < 0
       [
         set breed negatives ; counts # on left
       ]
 end
 
-to update-plots
-  
-  
+to my-update-plots
+
+
   set-current-plot "Number of Particles vs Time" ; plots # of particles on each side with time
-  
+
   set-current-plot-pen "Left"
     plot count negatives
-  
+
   set-current-plot-pen "Right"
     plot count positives
 end
-  
+
 @#$#@#$#@
 GRAPHICS-WINDOW
 221
@@ -340,6 +344,7 @@ GRAPHICS-WINDOW
 1
 1
 ticks
+30.0
 
 BUTTON
 0
@@ -356,6 +361,7 @@ NIL
 NIL
 NIL
 NIL
+1
 
 SLIDER
 2
@@ -366,7 +372,7 @@ Number-of-Slits
 Number-of-Slits
 0
 5
-5
+1
 1
 1
 NIL
@@ -381,7 +387,7 @@ Number-of-Particles-on-Left
 Number-of-Particles-on-Left
 0
 100
-35
+12
 1
 1
 NIL
@@ -402,6 +408,7 @@ NIL
 NIL
 NIL
 NIL
+1
 
 SLIDER
 2
@@ -412,7 +419,7 @@ Number-of-Particles-on-Right
 Number-of-Particles-on-Right
 0
 100
-57
+93
 1
 1
 NIL
@@ -425,7 +432,7 @@ SWITCH
 115
 Show-path?
 Show-path?
-1
+0
 1
 -1000
 
@@ -436,7 +443,7 @@ SWITCH
 79
 Show-Direction?
 Show-Direction?
-1
+0
 1
 -1000
 
@@ -477,6 +484,7 @@ NIL
 NIL
 NIL
 NIL
+1
 
 PLOT
 675
@@ -492,9 +500,10 @@ Number if Molecules
 10.0
 true
 true
+"" ""
 PENS
-"Left" 1.0 0 -1184463 true
-"Right" 1.0 0 -5825686 true
+"Left" 1.0 0 -1184463 true "" ""
+"Right" 1.0 0 -5825686 true "" ""
 
 SLIDER
 3
@@ -520,7 +529,7 @@ Temperature
 Temperature
 0
 100
-57
+100
 1
 1
 C
@@ -544,23 +553,21 @@ SWITCH
 301
 Barrier?
 Barrier?
-1
+0
 1
 -1000
 
 @#$#@#$#@
-WHAT IS IT?
------------
+## WHAT IS IT?
+
 This model demonstrates the behavior of gases during diffusion and the process of reaching a dynamic equilibrium.
 
+## HOW IT WORKS
 
-HOW IT WORKS 
-------------
 The particles are programed to bounce off of each other and off of the walls and barrier.  If two particles collide, both particles will turn around 180 degrees and continue at the same speed that they initially had.  A particle that hits a wall or the barrier collide in the same manner.
 
+## HOW TO USE IT
 
-HOW TO USE IT
--------------
 SETUP: clicking the setup button will setup the world based on the parameters the user sets using the sliders (how many turtles on each side, how many slits, width of slits, etc).
 
 GO: causes the turtles to move, following the rules for collisions.
@@ -591,26 +598,23 @@ STOP-AT-EQUILIBRIUM?: Stops the particles from moving (stops the model) once the
 
 NUMBER OF PARTICLES VS TIME (GRAPH): Graphs the number of particles on each side against time as the model runs.  The number of particles that are on the left are marked by a yellow line while those on the right are marked by a magenta line.
 
-
-THINGS TO TRY AND TO NOTICE
--------------
+## THINGS TO TRY AND TO NOTICE
 
 Set barrier? to yes and the number of slits to 0 and see how the particles act when confined to one side.
 
 Set barrier? to no.  Notice how the particles act when there is no barrier.
 
-Change the number of particles that begin on each side.  
+Change the number of particles that begin on each side.
 Notice how this effects the diffusion of the particles.
 
 Set barrier? to yes.  Change the number of slits and notice how this affects diffusion.
 Change the width of the slits and notice how this affects diffusion.
 
-Try running the model with different temperatures.  What effect does temperature have on the particles? 
+Try running the model with different temperatures.  What effect does temperature have on the particles?
 
 Notice the behavior of the particles over time using the graph and the counts on the right side of the model.  Compare graphs from different trials where different variables from above were changed.  In what way does each variable affect the rate of diffusion?
 
-EXTENDING THE MODEL
--------------------
+## EXTENDING THE MODEL
 
 This model could take into account the transfer of energy when particles collide.  Instead of maintaining the same energyand speed and merely reversing direction, particles can be set to have collisions that are not head-on.
 
@@ -618,15 +622,13 @@ Pressure could be added to this model using the number of collisions on the wall
 
 Turtles (Particles) of different sizes could be introduced to show the effects of a semi-permeable membrane where small particles can pass through the barrier while larger ones can not.  The width of the slits would play an even bigger role in such a model.
 
-RELATED MODELS
---------------
+## RELATED MODELS
+
 GasLab Models
 Heat Models
 Connected Chemistry Models
 
-
-CREDITS AND REFERENCES
-----------------------
+## CREDITS AND REFERENCES
 
 This model was created by Courtney Luckabaugh.
 @#$#@#$#@
@@ -922,7 +924,7 @@ Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 
 @#$#@#$#@
-NetLogo 4.1
+NetLogo 5.3.1
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
@@ -930,9 +932,9 @@ NetLogo 4.1
 @#$#@#$#@
 default
 0.0
--0.2 0 1.0 0.0
+-0.2 0 0.0 1.0
 0.0 1 1.0 0.0
-0.2 0 1.0 0.0
+0.2 0 0.0 1.0
 link direction
 true
 0
