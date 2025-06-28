@@ -317,15 +317,14 @@ to my-update-plots
   set-current-plot-pen "Right"
     plot count positives
 end
-
 @#$#@#$#@
 GRAPHICS-WINDOW
 221
 10
-660
-470
-16
-16
+658
+448
+-1
+-1
 13.0
 1
 10
@@ -372,7 +371,7 @@ Number-of-Slits
 Number-of-Slits
 0
 5
-1
+1.0
 1
 1
 NIL
@@ -387,7 +386,7 @@ Number-of-Particles-on-Left
 Number-of-Particles-on-Left
 0
 100
-12
+0.0
 1
 1
 NIL
@@ -419,7 +418,7 @@ Number-of-Particles-on-Right
 Number-of-Particles-on-Right
 0
 100
-93
+45.0
 1
 1
 NIL
@@ -514,7 +513,7 @@ Width-of-Slits
 Width-of-Slits
 2
 4
-3
+2.0
 1
 1
 NIL
@@ -529,7 +528,7 @@ Temperature
 Temperature
 0
 100
-100
+61.0
 1
 1
 C
@@ -553,7 +552,7 @@ SWITCH
 301
 Barrier?
 Barrier?
-0
+1
 1
 -1000
 
@@ -922,9 +921,8 @@ false
 0
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
-
 @#$#@#$#@
-NetLogo 5.3.1
+NetLogo 6.4.0
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
@@ -940,7 +938,6 @@ true
 0
 Line -7500403 true 150 150 90 180
 Line -7500403 true 150 150 210 180
-
 @#$#@#$#@
 0
 @#$#@#$#@
